@@ -91,7 +91,19 @@ describe('When user not logged in', async () => {
   })
 
   test('user can not get list of blogs', async () => {
-    const result = await 
+    const result = await await page.evaluate(
+      () => {
+        return fetch('/api/blogs', {
+          method: 'GET',
+          credentials: 'same-origin',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }).then(res =>
+          res.json()
+        )
+      }
+    )
 
     expect(result).toEqual({ error: 'You must log in!' })
   })
